@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Mailchimp Webhook</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="jumbotron text-center">
+    <h1>Mailchimp Webhook</h1>
+    <p>Webhooks Documentation | <a href="https://mailchimp.com/developer/transactional/docs/webhooks/">Mailchimp
+        Developer</a></p>
+    <h1 id="app">
+        {{ text }}
+    </h1>
+</div>
+</body>
+</html>
+<script>
+    var socket = new WebSocket(
+        'ws://127.0.0.1:8000/ws/notifiation/'
+    )
+    socket.onmessage = function (event) {
+        var data = JSON.parse(event.data);
+        console.log(data);
+        document.querySelector('#app').innerText = data.message;
+    }
+</script>

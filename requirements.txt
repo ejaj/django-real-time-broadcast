@@ -1,0 +1,11 @@
+asgiref==3.6.0
+Django==4.1.7
+sqlparse==0.4.3
+djrill==2.1.0
+mailchimp-marketing==3.0.80
+djangorestframework==3.14.0
+django-environ==0.10.0
+psycopg2==2.9.5
+channels==3.0.4
+channels-redis==3.3.0
+redis==4.5.2

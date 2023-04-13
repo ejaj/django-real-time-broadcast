@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Graph Chart</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+<div class="jumbotron text-center">
+    <h1>Graph Chart</h1>
+    <div>
+        <canvas id="myChart" width="400" height="200"></canvas>
+    </div>
+</div>
+</body>
+</html>
+<script>
+    const ctx = document.getElementById('myChart').getContext('2d');
+
+    var graphData = {
+        type: 'line',
+        data: {
+            labels: ['jan', 'feb', 'mar', 'apr', 'may', 'june'],
+            datasets: [{
+                label: '# of Votes',
+                data: [12, 19, 3, 5, 2, 3],
+                backgroundColor: [
+                    'rgba(73, 198, 230, 0.5)',
+                ],
+                borderColor: 'rgb(75, 192, 192)',
+                borderWidth: 1
+            }]
+        },
+        options: {}
+    }
+    var myChart = new Chart(ctx, graphData);
+
+    var socket = new WebSocket(
+        'ws://127.0.0.1:8000/ws/graph/'
+    )
+    socket.onmessage = function (e) {
+        var wsdata = JSON.parse(e.data);
+        console.log(wsdata);
+        var newGraphData = graphData.data.datasets[0].data;
+        newGraphData.shift();
+        newGraphData.push(wsdata.value);
+        graphData.data.datasets[0].data = newGraphData;
+        myChart.update();
+    }
+</script>
